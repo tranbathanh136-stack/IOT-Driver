@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOLO26 - Nhật Ký Lịch Sử Giám Sát Chi Tiết</title>
+  <link rel="stylesheet" href="/history/history.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    .grid-5 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .table-card { background: #111827; padding: 16px; border-radius: 10px; border: 1px solid #1f2937; }
+    .table-card h3 { color: #38bdf8; margin-bottom: 12px; border-bottom: 1px solid #1f2937; padding-bottom: 8px; font-size: 14px; font-weight: 700; }
+    .filter-box { background: #111827; padding: 14px 18px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #1f2937; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .btn-action { background: #0284c7; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn-reset-flt { background: #374151; color: #d1d5db; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; }
+    .back-link { color: #38bdf8; text-decoration: none; font-size: 13px; font-weight: 600; margin-bottom: 12px; display: inline-block; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="history-body">
+  <div class="history-container">
+    <a href="/" class="back-link">← Quay lại Dashboard Trực Tuyến</a>
+    <h1>BẢNG NHẬT KÝ SỰ KIỆN AN TOÀN TÀI XẾ & IOT (YOLO26)</h1>
+    
+    <div class="filter-box">
+      <label>Lọc theo khoảng thời gian (HH:MM:SS):</label>
+      <input type="time" step="1" id="timeStart"> đến <input type="time" step="1" id="timeEnd">
+      <button onclick="applyFilter()" class="btn-action">Lọc Dữ Liệu</button>
+      <button onclick="resetFilter()" class="btn-reset-flt">Xóa Lọc</button>
+    </div>
+
+    <div class="grid-5">
+      <!-- 1. NGỦ GẬT -->
+      <div class="table-card">
+        <h3>1. 👁️ Ngủ Gật (Mắt Nhắm)</h3>
+        <table class="history-table">
+          <thead><tr><th>Thời Điểm</th><th>Kéo Dài (s)</th></tr></thead>
+          <tbody id="tbDrowsiness"></tbody>
+        </table>
+      </div>
+      
+      <!-- 2. ĐIỆN THOẠI -->
+      <div class="table-card">
+        <h3>2. 📱 Dùng Điện Thoại (Phân Tâm)</h3>
+        <table class="history-table">
+          <thead><tr><th>Thời Điểm</th><th>Kéo Dài (s)</th></tr></thead>
+          <tbody id="tbDistraction"></tbody>
+        </table>
+      </div>
+
+      <!-- 3. NGÁP -->
+      <div class="table-card">
+        <h3>3. 🥱 Ngáp Mệt Mỏi</h3>
+        <table class="history-table">
+          <thead><tr><th>Thời Điểm</th><th>Kéo Dài (s)</th></tr></thead>
+          <tbody id="tbYawning"></tbody>
+        </table>
+      </div>
+
+      <!-- 4. TƯ THẾ GỤC ĐẦU -->
+      <div class="table-card">
+        <h3>4. 🧘 Tư Thế Lái Xe (Pose AI)</h3>
+        <table class="history-table">
+          <thead><tr><th>Thời Điểm</th><th>Kéo Dài (s)</th><th>Chi Tiết</th></tr></thead>
+          <tbody id="tbPosture"></tbody>
+        </table>
+      </div>
+      
+      <!-- 5. KHÍ CO2 -->
+      <div class="table-card">
+        <h3>5. 💨 Khí CO2 Vượt Ngưỡng (IoT)</h3>
+        <table class="history-table">
+          <thead><tr><th>Thời Điểm</th><th>Kéo Dài (s)</th><th>Max CO2</th><th>Cấp Độ</th></tr></thead>
+          <tbody id="tbCo2"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="/history/history.js"></script>
+</body>
+</html>

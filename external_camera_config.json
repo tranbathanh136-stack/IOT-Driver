@@ -1,0 +1,4 @@
+{
+    "external_camera_ip": "",
+    "notes": "Điền địa chỉ IP camera ngoài (ví dụ: http://192.168.1.100:8080/video). Để trống nếu dùng webcam mặc định cục bộ."
+}

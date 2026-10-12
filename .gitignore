@@ -1,0 +1,31 @@
+# Python Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Logs & Temporary Data
+logs/*.log
+logs/*.jsonl
+*.log
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Large Models (Tuỳ chọn: Nếu không muốn push các file model nặng > 50MB, bạn có thể uncomment)
+# *.pt
+# *.onnx

@@ -1,0 +1,56 @@
+{
+  "system": {
+    "project_name": "YOLO26 Driver Safety & IoT Intelligence",
+    "version": "2.6.0",
+    "debug": false
+  },
+  "camera": {
+    "device_index": 0,
+    "width": 1280,
+    "height": 720,
+    "target_fps": 30,
+    "inference_size": 320,
+    "zero_lag_grabber": true
+  },
+  "arduino_serial": {
+    "port": "COM3",
+    "baudrate": 115200,
+    "timeout": 0.5,
+    "auto_detect_port": true
+  },
+  "models": {
+    "yolo_drowsiness": "models/best.pt",
+    "yolo_pose": "models/yolo26n-pose.pt",
+    "yolo_distraction": "models/yolov8n.pt",
+    "enable_pose_detection": false,
+    "enable_distraction_detection": true,
+    "confidence_threshold": 0.40
+  },
+  "temporal_logic": {
+    "closed_eye_seconds": 1.5,
+    "yawn_seconds": 1.5,
+    "phone_seconds": 1.0,
+    "bad_posture_seconds": 2.0
+  },
+  "alarm": {
+    "enabled": true,
+    "sound_file": "assets/alarm.wav",
+    "cooldown_seconds": 3.0,
+    "play_on_drowsiness": true,
+    "play_on_phone": true,
+    "play_on_yawn": false,
+    "play_on_co2_critical": true
+  },
+  "sensor_co2": {
+    "safe_threshold": 800.0,
+    "warning_threshold": 1000.0,
+    "critical_threshold": 1500.0
+  },
+  "safety_score": {
+    "initial_score": 100,
+    "deduct_warning": 2,
+    "deduct_critical": 5,
+    "recovery_rate_sec": 30.0,
+    "recovery_points": 1
+  }
+}

@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.history-body {
+  background-color: #0b0f19;
+  color: #d1d5db;
+  padding: 24px;
+}
+
+.history-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #131b2e;
+  border: 1px solid #1f293d;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #23304a;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.title-group h1 {
+  font-size: 18px;
+  color: #60a5fa;
+  letter-spacing: 0.5px;
+}
+
+.title-group p {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.live-tag {
+  background: #11271f;
+  color: #34d399;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid #059669;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.live-tag .dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.btn-clear {
+  background: #242f47;
+  color: #e5e7eb;
+  border: 1px solid #3b4b6d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.2s;
+}
+
+.btn-clear:hover {
+  background: #324162;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.history-table th {
+  background: #0d1424;
+  color: #93c5fd;
+  padding: 12px;
+  border-bottom: 2px solid #23304a;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.history-table td {
+  padding: 12px;
+  border-bottom: 1px solid #1c263c;
+  vertical-align: middle;
+}
+
+.history-table tr:hover {
+  background: #18223a;
+}
+
+.text-center {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 24px !important;
+}
+
+/* Badge phân biệt 3 nguồn cảnh báo */
+.tag-cam { background: #3c1e4d; color: #d8b4fe; border: 1px solid #7e22ce; padding: 3px 8px; border-radius: 4px; font-weight: 600; font-size: 11px; }
+.tag-co2 { background: #163345; color: #7dd3fc; border: 1px solid #0284c7; padding: 3px 8px; border-radius: 4px; font-weight: 600; font-size: 11px; }
+.tag-pi  { background: #3d3118; color: #fde047; border: 1px solid #ca8a04; padding: 3px 8px; border-radius: 4px; font-weight: 600; font-size: 11px; }
+
+/* Cấp độ cảnh báo */
+.lvl-critical { color: #f87171; font-weight: bold; }
+.lvl-warning  { color: #facc15; font-weight: bold; }
+.lvl-safe     { color: #4ade80; }
+
+.deduct-badge {
+  background: #451a1a;
+  color: #fca5a5;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-weight: bold;
+}

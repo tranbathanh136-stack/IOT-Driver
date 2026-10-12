@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOLO26 - Hệ Thống Giám Sát An Toàn Tài Xế & IoT Đa Tác Vụ</title>
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body class="dark-layout">
+  <!-- THANH ĐIỀU HƯỚNG CHÍNH -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="logo-badge">YOLO26</div>
+      <div>
+        <h2>HỆ THỐNG GIÁM SÁT AN TOÀN TÀI XẾ & IOT FLEET</h2>
+        <span>Hợp nhất Đa Mô hình AI: Mắt, Ngáp, Điện Thoại, Tư Thế & Nồng Độ CO2</span>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a href="/history" target="_blank" class="nav-tag-btn">
+        <span class="icon">📜</span> Xem Nhật Ký Lịch Sử Toàn Diện
+      </a>
+      <span class="badge-status" id="sysStatus">HỆ THỐNG SẴN SÀNG</span>
+    </div>
+  </header>
+
+  <!-- THANH METRICS TỔNG QUAN -->
+  <div class="metrics-bar">
+    <div class="metric-card">
+      <div class="metric-title">Điểm An Toàn Tài Xế</div>
+      <div class="metric-val score-val" id="driverScore">100 / 100</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="scoreBar" style="width: 100%;"></div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-title">Trạng Thái AI Thị Giác</div>
+      <div class="metric-val" id="aiStatusText" style="color: #4ade80;">AN TOÀN</div>
+      <div class="metric-sub" id="aiDetailText">Tài xế tỉnh táo & quan sát đường</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-title">Cảm Biến CO2 Thật (MQ-135)</div>
+      <div class="metric-val" id="co2Number" style="color: #4ade80;">-- ppm</div>
+      <div class="metric-sub" id="co2Level">Đang chờ cổng Serial Arduino...</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-title">Còi Báo Động (Alarm Service)</div>
+      <div class="metric-val" id="soundStatusText" style="color: #38bdf8;">HOẠT ĐỘNG</div>
+      <div class="metric-sub">WAV Native / Cooldown 3s</div>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <!-- CỘT TRÁI: CAMERA AI STREAM VÀ THÔNG SỐ -->
+    <div class="col-left">
+      <div class="box card-vision">
+        <div class="box-header">
+          <h3>Camera AI Nhận Diện Thời Gian Thực (HUD View)</h3>
+          <span class="badge-cam" id="camBadge">HD 720P LIVE</span>
+        </div>
+        <div class="video-feed" id="videoBox">
+          <img src="/video_feed" id="videoImg" alt="Live Stream" onerror="this.style.display='none'; document.getElementById('cam-error').style.display='block';">
+          <div id="cam-error" style="display:none;" class="cam-fallback">
+            <p>⚠️ Chưa tìm thấy luồng Camera thật hoặc Camera đang bận</p>
+            <small>Bạn có thể thử các nút bấm kiểm tra kịch bản (Demo Triggers) ở cột bên phải</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- BẢNG THEO DÕI ĐA CHỈ SỐ AI -->
+      <div class="box card-sensors-grid">
+        <h3>Giám Sát 4 Trạng Thái Trí Tuệ Nhân Tạo</h3>
+        <div class="indicators-grid">
+          <div class="ind-card" id="indEye">
+            <div class="ind-icon">👁️</div>
+            <div class="ind-name">Mắt (Drowsiness)</div>
+            <div class="ind-status safe" id="statusEye">Bình Thường</div>
+          </div>
+          <div class="ind-card" id="indYawn">
+            <div class="ind-icon">🥱</div>
+            <div class="ind-name">Miệng (Yawning)</div>
+            <div class="ind-status safe" id="statusYawn">Bình Thường</div>
+          </div>
+          <div class="ind-card" id="indPhone">
+            <div class="ind-icon">📱</div>
+            <div class="ind-name">Điện Thoại (Distraction)</div>
+            <div class="ind-status safe" id="statusPhone">Không Phát Hiện</div>
+          </div>
+          <div class="ind-card" id="indPosture">
+            <div class="ind-icon">🧘</div>
+            <div class="ind-name">Tư Thế (Pose AI)</div>
+            <div class="ind-status safe" id="statusPosture">Chuẩn Tư Thế</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CỘT PHẢI: BẢNG CẢNH BÁO ƯU TIÊN VÀ BỘ TEST TỨC THÌ -->
+    <div class="col-right">
+      <!-- THẺ CẢNH BÁO ƯU TIÊN -->
+      <div class="box card-priority-tag tag-linkable" id="priorityAlertTag" onclick="window.open('/history', '_blank')">
+        <div class="box-header">
+          <h3>Thẻ Cảnh Báo Phân Cấp (AIC)</h3>
+          <span class="badge-click">Click xem Lịch sử ↗</span>
+        </div>
+        <div class="tag-status-text" id="alertMsg">Hệ thống đang hoạt động an toàn</div>
+        <div class="tag-meta" id="alertMeta">Nguồn: Sẵn sàng | Độ trễ: 0ms</div>
+      </div>
+
+      <!-- KHU VỰC THỬ NGHIỆM TỨC THÌ (DEMO TRIGGERS) -->
+      <div class="box card-form">
+        <h3>Khu Vực Thử Nghiệm Tức Thì (Demo Triggers)</h3>
+        <p class="form-desc">Kiểm tra ngay phản ứng hệ thống (còi báo, trừ điểm, gửi WebSocket, ghi lịch sử) mà không cần webcam:</p>
+        
+        <div class="btn-grid">
+          <button class="btn btn-danger" onclick="triggerTestAI('DROWSINESS')">
+            🚨 Test Ngủ Gật (-5đ)
+          </button>
+          <button class="btn btn-danger" onclick="triggerTestAI('PHONE')">
+            📱 Test Điện Thoại (-5đ)
+          </button>
+          <button class="btn btn-warn" onclick="triggerTestAI('YAWNING')">
+            🥱 Test Ngáp (-2đ)
+          </button>
+          <button class="btn btn-warn" onclick="triggerTestAI('POSTURE')">
+            🧘 Test Gục Đầu (-2đ)
+          </button>
+          <button class="btn btn-danger" onclick="triggerTestAI('CO2_CRITICAL')">
+            💨 Test CO2 Cao (-5đ)
+          </button>
+          <button class="btn btn-reset" onclick="triggerTestAI('RESET_SCORE')">
+            🔄 Khôi Phục 100 Điểm
+          </button>
+        </div>
+      </div>
+
+      <!-- THÔNG TIN TIẾN TRÌNH HỆ THỐNG -->
+      <div class="box card-worker">
+        <h3>Mô-đun Hệ Thống Chạy Ngầm</h3>
+        <div class="worker-item">
+          <span>YOLO26 Unified AI Pipeline:</span>
+          <span class="badge ok">Đang chạy 3 Models đồng bộ</span>
+        </div>
+        <div class="worker-item">
+          <span>Virtual Raspberry Pi Telemetry:</span>
+          <span class="badge running">Gửi CO2 chu kỳ 1s & Actuator Feedback</span>
+        </div>
+        <div class="worker-item">
+          <span>Hàng đợi Async Uploader & Circuit Breaker:</span>
+          <span class="badge ok">Bộ đệm Deque(200) chống rò rỉ RAM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
