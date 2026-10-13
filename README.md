@@ -31,6 +31,7 @@ e:\AI\YOLO26/
 │   └── esp32_firmware.ino      # [BƯỚC 1 & 4 IoT] Firmware ESP32 FreeRTOS Fail-Safe, EMA & còi PWM
 ├── models/
 │   ├── best.pt                 # Model YOLO phát hiện nhắm mắt & ngáp (từ IOT)
+│   ├── face_landmarker.task    # Model MediaPipe điểm mốc khuôn mặt (đã gộp đồng nhất từ model/)
 │   ├── yolov8n.pt              # Model YOLO phát hiện điện thoại (từ TEST_1)
 │   └── yolo26n-pose.pt         # Model YOLO nhận diện tư thế Pose (từ YOLO)
 ├── core/

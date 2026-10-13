@@ -22,9 +22,13 @@ class RealVisionDetector:
         try:
             # [THIẾT KẾ: DÙNG YOLO THAY VÌ MEDIAPIPE]
             # YOLOv8 (ultralytics) hoạt động cực kì ổn định trên Python 3.14+ (ngược với mediapipe hay bị lỗi file config).
-            # Nó trực tiếp nhận diện các Object như "Drowsy eye" (mắt buồn ngủ), "Yawn" (ngáp).
-            self.model = YOLO("model/best.pt")
-            print("[Vision AI] Đã nạp thành công mô hình YOLO best.pt")
+            from pathlib import Path
+            base_dir = Path(__file__).resolve().parent.parent
+            model_path = base_dir / "models" / "best.pt"
+            if not model_path.exists():
+                model_path = Path("models/best.pt")
+            self.model = YOLO(str(model_path))
+            print(f"[Vision AI] Đã nạp thành công mô hình YOLO best.pt từ {model_path}")
         except Exception as e:
             print(f"[Isolate Error] Lỗi nạp mô hình YOLO: {e}")
             self.model = None

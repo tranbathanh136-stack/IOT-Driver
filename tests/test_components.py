@@ -25,12 +25,14 @@ class TestYOLO26Components(unittest.TestCase):
         self.assertEqual(cfg["system"]["version"], "2.6.0")
 
     def test_02_model_and_asset_files_exist(self):
-        """Kiểm tra sự tồn tại của các file model và âm thanh đã copy"""
+        """Kiểm tra sự tồn tại của các file model và âm thanh đã gộp đồng nhất trong models/"""
         base_dir = Path(__file__).resolve().parent.parent
         self.assertTrue((base_dir / "models" / "best.pt").exists(), "best.pt phải tồn tại")
+        self.assertTrue((base_dir / "models" / "face_landmarker.task").exists(), "face_landmarker.task phải tồn tại")
         self.assertTrue((base_dir / "models" / "yolov8n.pt").exists(), "yolov8n.pt phải tồn tại")
         self.assertTrue((base_dir / "models" / "yolo26n-pose.pt").exists(), "yolo26n-pose.pt phải tồn tại")
         self.assertTrue((base_dir / "assets" / "alarm.wav").exists(), "alarm.wav phải tồn tại")
+        self.assertFalse((base_dir / "model").exists(), "Thư mục trùng lặp 'model' phải được gộp hoàn toàn vào 'models'")
 
     def test_03_temporal_safety_logic(self):
         """Kiểm tra logic lọc thời gian tránh báo động giả do chớp mắt"""

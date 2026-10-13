@@ -1,11 +1,19 @@
 import os
+from pathlib import Path
 import cv2
 import numpy as np
 
 class VisionDetector:
     def __init__(self, models_dir="models"):
-        self.task_path = os.path.join(models_dir, "face_landmarker.task")
-        self.yolo_path = os.path.join(models_dir, "best.pt")
+        models_path = Path(models_dir)
+        if not models_path.is_absolute() and not models_path.exists():
+            base_dir = Path(__file__).resolve().parent.parent
+            resolved = base_dir / models_dir
+            if resolved.exists():
+                models_path = resolved
+        models_dir_str = str(models_path)
+        self.task_path = os.path.join(models_dir_str, "face_landmarker.task")
+        self.yolo_path = os.path.join(models_dir_str, "best.pt")
         self.yolo_model = None
         
         # Nạp YOLO nếu file tồn tại
